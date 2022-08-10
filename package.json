@@ -1,0 +1,17 @@
+{
+  "name": "ServerBot",
+  "version": "1.0.0",
+  "description": "Bad minecraft server controller",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hecklar",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.8.1",
+    "dotenv": "^16.0.1",
+    "minecraft-rcon-client": "^1.5.2",
+    "minecraft-server-util": "^5.3.0"
+  }
+}
