@@ -1,6 +1,7 @@
 const { access } = require('fs');
 const util = require('minecraft-server-util');
 
+var kill = require('tree-kill');
 var spawn = require('child_process').spawn;
 
 var MC_SERVER_START_SCRIPT = "C:/Users/Aliba/Desktop/test server/start.bat";
@@ -14,13 +15,18 @@ function searchStr (str, strArray) {
 }
 
 module.exports = {
-    name: "start",
+    name: "stop",
     category: "main",
     permissions: [],
     devOnly: false,
     run: async ({bot, message, args}) => {
         var mcserver;
         if (message.member.roles.cache.some(role => role.name === consolemaster)) {
+            var access = true
+        } else {
+            var access = false
+        }
+        if (args[0] == "start" && message.member.roles.cache.some(role => role.name === consolemaster)) {
             message.channel.send("attempting to start...")
             const options = {
                 timeout: 1000 * 5, 
@@ -32,7 +38,8 @@ module.exports = {
                 })
                 .catch((error) => {
                     console.error(error);
-                    var logS = error.message.split(" ")
+                    var log = error.message
+                    var logS = log.split(" ")
                     if (searchStr("ECONNREFUSED", logS) == 1) {
                         if (mcserver == null) {
                             message.channel.send("Server is off, starting")
@@ -44,8 +51,12 @@ module.exports = {
                         message.channel.send("ERROR:" + error.message)
                     }
                 })
-        } else {
+        } else if (args[0] == "stop" && message.member.roles.cache.some(role => role.name === consolemaster)) {
+            message.reply("asking to stop...")
+        } else if (access == false) {
             message.channel.send("You don't have permission")
+        } else if (access == true) {
+            message.channel.send("type start or stop")
         }
     }
 }
