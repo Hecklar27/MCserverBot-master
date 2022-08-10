@@ -22,41 +22,44 @@ module.exports = {
     run: async ({bot, message, args}) => {
         var mcserver;
         if (message.member.roles.cache.some(role => role.name === consolemaster)) {
-            var access = true
-        } else {
-            var access = false
-        }
-        if (args[0] == "start" && message.member.roles.cache.some(role => role.name === consolemaster)) {
-            message.channel.send("attempting to start...")
+            message.channel.send("attempting to stop...")
             const options = {
                 timeout: 1000 * 5, 
             };
             util.status('localhost', 25565, options)
                 .then((result) => {
                     console.log(result)
-                    message.channel.send("server is already running!")
+                    message.channel.send("server is attempting to stop...")
+                    const connectOpts = {
+                        timeout: 1000 * 5
+                    };
+                    
+                    const loginOpts = {
+                        timeout: 1000 * 5
+                    };
+                    const client = new util.RCON();
+                    (async () => {
+                        await client.connect('localhost', 25575, connectOpts);
+                        await client.login('3435', loginOpts);
+                        
+                        const reply = await client.execute('stop');
+                        console.log(reply);
+                        message.channel.send("Console Log: " + reply)
+
+                        await client.close();
+                    })();
                 })
                 .catch((error) => {
                     console.error(error);
-                    var log = error.message
-                    var logS = log.split(" ")
+                    var logS = error.message.split(" ")
                     if (searchStr("ECONNREFUSED", logS) == 1) {
-                        if (mcserver == null) {
-                            message.channel.send("Server is off, starting")
-                            mcserver = spawn(MC_SERVER_START_SCRIPT);
-                            } else {
-                                message.channel.send("Server is already running!")
-                            }
+                        message.channel.send("server is not running!")
                     } else {
                         message.channel.send("ERROR:" + error.message)
                     }
                 })
-        } else if (args[0] == "stop" && message.member.roles.cache.some(role => role.name === consolemaster)) {
-            message.reply("asking to stop...")
-        } else if (access == false) {
+        } else {
             message.channel.send("You don't have permission")
-        } else if (access == true) {
-            message.channel.send("type start or stop")
         }
     }
 }
