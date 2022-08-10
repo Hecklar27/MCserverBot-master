@@ -21,14 +21,14 @@ module.exports = {
     run: async ({bot, message, args}) => {
         var mcserver;
         if (message.member.roles.cache.some(role => role.name === consolemaster)) {
-            message.channel.send("attempting to start...")
+            message.channel.send("Attempting to start...")
             const options = {
                 timeout: 1000 * 5, 
             };
             util.status('localhost', 25565, options)
                 .then((result) => {
                     console.log(result)
-                    message.channel.send("server is already running!")
+                    message.channel.send("Server is already running!")
                 })
                 .catch((error) => {
                     console.error(error);

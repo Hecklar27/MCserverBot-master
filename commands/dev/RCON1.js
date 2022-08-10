@@ -2,9 +2,9 @@ const util = require('minecraft-server-util');
 
 module.exports = {
     name: "rcon",
-    category: "main",
+    category: "dev",
     permissions: [],
-    devOnly: false,
+    devOnly: true,
     run: async ({bot, message, args}) => {
         message.reply("asking...")
         const connectOpts = {

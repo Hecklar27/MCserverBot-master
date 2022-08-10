@@ -22,14 +22,14 @@ module.exports = {
     run: async ({bot, message, args}) => {
         var mcserver;
         if (message.member.roles.cache.some(role => role.name === consolemaster)) {
-            message.channel.send("attempting to stop...")
+            message.channel.send("Attempting to stop...")
             const options = {
                 timeout: 1000 * 5, 
             };
             util.status('localhost', 25565, options)
                 .then((result) => {
                     console.log(result)
-                    message.channel.send("server is attempting to stop...")
+                    message.channel.send("Server is attempting to stop...")
                     const connectOpts = {
                         timeout: 1000 * 5
                     };
@@ -53,7 +53,7 @@ module.exports = {
                     console.error(error);
                     var logS = error.message.split(" ")
                     if (searchStr("ECONNREFUSED", logS) == 1) {
-                        message.channel.send("server is not running!")
+                        message.channel.send("Server is not running!")
                     } else {
                         message.channel.send("ERROR:" + error.message)
                     }
