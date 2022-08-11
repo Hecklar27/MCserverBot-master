@@ -4,3 +4,4 @@ module.exports = {
         console.log("Logged in as " + bot.client.user.tag)
     }
 }
+
